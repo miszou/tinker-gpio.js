@@ -1,4 +1,4 @@
-var gpio = require('../rpi-gpio');
+var gpio = require('../tinker-gpio');
 
 gpio.on('export', function(channel) {
     console.log('Channel set: ' + channel);

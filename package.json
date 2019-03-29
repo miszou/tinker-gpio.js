@@ -1,11 +1,12 @@
 {
-  "name": "rpi-gpio",
+  "name": "tinker-gpio",
   "version": "2.1.3",
-  "description": "Control Raspberry Pi GPIO pins with node.js",
-  "main": "rpi-gpio.js",
+  "description": "Control Asus Tinker Board GPIO pins with node.js",
+  "private": true,
+  "main": "tinker-gpio.js",
   "keywords:": [
-    "raspberry",
-    "pi",
+    "tinker board",
+    "tinker",
     "gpio"
   ],
   "directories": {
@@ -25,9 +26,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JamesBarwell/rpi-gpio.js.git"
+    "url": "https://github.com/miszou/tinker-gpio.js.git"
   },
-  "author": "James Barwell <jb@jamesbarwell.co.uk>",
+  "author": "Maik Fischer <m.fischer@beyond-interfaces.com>",
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {

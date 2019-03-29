@@ -2,82 +2,41 @@ var fs           = require('fs');
 var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
 var retry        = require('async-retry');
-var debug        = require('debug')('rpi-gpio');
+var debug        = require('debug')('tinker-gpio');
 var Epoll        = require('epoll').Epoll;
 
 var PATH = '/sys/class/gpio';
+
 var PINS = {
     v1: {
-        // 1: 3.3v
-        // 2: 5v
-        '3':  0,
-        // 4: 5v
-        '5':  1,
-        // 6: ground
-        '7':  4,
-        '8':  14,
-        // 9: ground
-        '10': 15,
-        '11': 17,
-        '12': 18,
-        '13': 21,
-        // 14: ground
-        '15': 22,
-        '16': 23,
-        // 17: 3.3v
-        '18': 24,
-        '19': 10,
-        // 20: ground
-        '21': 9,
-        '22': 25,
-        '23': 11,
-        '24': 8,
-        // 25: ground
-        '26': 7
-    },
-    v2: {
-        // 1: 3.3v
-        // 2: 5v
-        '3':  2,
-        // 4: 5v
-        '5':  3,
-        // 6: ground
-        '7':  4,
-        '8':  14,
-        // 9: ground
-        '10': 15,
-        '11': 17,
-        '12': 18,
-        '13': 27,
-        // 14: ground
-        '15': 22,
-        '16': 23,
-        // 17: 3.3v
-        '18': 24,
-        '19': 10,
-        // 20: ground
-        '21': 9,
-        '22': 25,
-        '23': 11,
-        '24': 8,
-        // 25: ground
-        '26': 7,
+        '3': 252,
+        '5': 253,
+        '7': 17,
+        '8': 161,
+        '10': 160,
+        '11': 164,
+        '12': 184,
+        '13': 166,
+        '15': 167,
+        '16': 162,
+        '18': 163,
+        '19': 257,
+        '21': 256,
+        '22': 171,
+        '23': 254,
+        '24': 255,
 
-        // Model B+ pins
-        // 27: ID_SD
-        // 28: ID_SC
-        '29': 5,
-        // 30: ground
-        '31': 6,
-        '32': 12,
-        '33': 13,
-        // 34: ground
-        '35': 19,
-        '36': 16,
-        '37': 26,
-        '38': 20,
-        // 39: ground
-        '40': 21
+        // Model A+ and Model B+ pins
+        '26': 251,
+        '29': 165,
+        '31': 168,
+        '32': 239,
+        '33': 238,
+        '35': 185,
+        '36': 223,
+        '37': 224,
+        '38': 187,
+        '40': 188
     }
 };
 
@@ -105,7 +64,7 @@ function Gpio() {
     var currentValidBcmPins;
     var exportedInputPins = {};
     var exportedOutputPins = {};
-    var getPinForCurrentMode = getPinRpi;
+    var getPinForCurrentMode = getPinTinkerBoard;
     var pollers = {};
 
     this.DIR_IN   = DIR_IN;
@@ -128,7 +87,7 @@ function Gpio() {
      */
     this.setMode = function(mode) {
         if (mode === this.MODE_RPI) {
-            getPinForCurrentMode = getPinRpi;
+            getPinForCurrentMode = getPinTinkerBoard;
         } else if (mode === this.MODE_BCM) {
             getPinForCurrentMode = getPinBcm;
         } else {
@@ -206,7 +165,7 @@ function Gpio() {
             }.bind(this));
         }.bind(this);
 
-        setRaspberryVersion()
+        setTinkerBoardVersion()
             .then(function() {
                 pinForSetup = getPinForCurrentMode(channel);
                 if (!pinForSetup) {
@@ -340,7 +299,7 @@ function Gpio() {
 
         currentPins = undefined;
         currentValidBcmPins = undefined;
-        getPinForCurrentMode = getPinRpi;
+        getPinForCurrentMode = getPinTinkerBoard;
         pollers = {}
     };
 
@@ -350,7 +309,7 @@ function Gpio() {
 
 
     // Private functions requring access to state
-    function setRaspberryVersion() {
+    function setTinkerBoardVersion() {
         if (currentPins) {
             return Promise.resolve();
         }
@@ -361,7 +320,7 @@ function Gpio() {
                     return reject(err);
                 }
 
-                // Match the last 4 digits of the number following "Revision:"
+                // Match the last 4 digits of the number following 'Revision:'
                 var match = data.match(/Revision\s*:\s*[0-9a-f]*([0-9a-f]{4})/);
 
                 if (!match) {
@@ -395,7 +354,7 @@ function Gpio() {
         });
     };
 
-    function getPinRpi(channel) {
+    function getPinTinkerBoard(channel) {
         return currentPins[channel] + '';
     };
 

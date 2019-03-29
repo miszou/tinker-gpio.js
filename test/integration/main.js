@@ -1,4 +1,4 @@
-var gpio = require('../../rpi-gpio');
+var gpio = require('../../tinker-gpio');
 var gpiop = gpio.promise;
 var assert = require('assert');
 var sinon = require('sinon');
@@ -24,7 +24,7 @@ function sleep() {
     });
 }
 
-describe('rpi-gpio integration', function() {
+describe('tinker-gpio integration', function() {
     context('write and read pins', function() {
         var readValue;
         var onChange = sinon.spy();

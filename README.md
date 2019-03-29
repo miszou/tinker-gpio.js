@@ -13,7 +13,7 @@ See this guide on how to get [node.js running on Raspberry Pi](http://thisdavej.
 
 This module can then be installed with npm:
 ```
-npm install rpi-gpio
+npm install tinker-gpio
 ```
 
 ### Dependency
@@ -89,7 +89,7 @@ This API exposes a Promises interface to the module. All of the same functions a
 The Promises interface is available in the `promise` namespace, e.g.:
 
 ```js
-var gpio = require('rpi-gpio')
+var gpio = require('tinker-gpio')
 var gpiop = gpio.promise;
 
 gpiop.setup(7, gpio.DIR_OUT)
@@ -106,7 +106,7 @@ gpiop.setup(7, gpio.DIR_OUT)
 
 See the `examples` directory included in this project.
 
-Please note that all examples are intended to be directly runnable from the code repository, so they always require the module in at the top using `var gpio = require(../rpi-gpio)`. In reality, you will want to include the module using `var gpio = require('rpi-gpio')`
+Please note that all examples are intended to be directly runnable from the code repository, so they always require the module in at the top using `var gpio = require(../tinker-gpio)`. In reality, you will want to include the module using `var gpio = require('tinker-gpio')`
 
 ## Contributing
 Contributions are always appreciated, whether that's in the form of bug reports, pull requests or helping to diagnose bugs and help other users on the issues page.
