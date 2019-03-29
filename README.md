@@ -1,34 +1,11 @@
-rpi-gpio.js
+tinker-gpio.js
 ==========
 
-Control Raspberry Pi GPIO pins with node.js
-
-[![Build Status](https://travis-ci.org/JamesBarwell/rpi-gpio.js.svg?branch=master)](https://travis-ci.org/JamesBarwell/rpi-gpio.js)
-[![NPM version](https://badge.fury.io/js/rpi-gpio.svg)](http://badge.fury.io/js/rpi-gpio)
+Control Asus Tinker Board GPIO pins with node.js
 
 ## Supported hardware
 
-* Raspberry Pi 1 Model A
-* Raspberry Pi 1 Model A+
-* Raspberry Pi 1 Model B
-* Raspberry Pi 1 Model B+
-* Raspberry Pi 2 Model B
-* Raspberry Pi 3 Model B
-* Raspberry Pi Zero
-* Raspberry Pi Zero W
-
-## Supported node versions
-
-rpi-gpio 1.x is no longer supported. Please use 2.x unless you need to run with an old version of node.
-
-| node version | rpi-gpio 1.x | rpi-gpio 2.x + |
-| ------------ | ------------ | -------------- |
-| 0.10         | Yes          | No             |
-| 0.12         | Yes          | No             |
-| 4            | Yes          | Yes            |
-| 6            | Yes          | Yes            |
-| 8            | Yes          | Yes            |
-| 10           | No           | Yes            |
+* Asus Tinker Board
 
 ## Setup and install
 
