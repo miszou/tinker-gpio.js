@@ -8,36 +8,32 @@ var Epoll        = require('epoll').Epoll;
 var PATH = '/sys/class/gpio';
 
 var PINS = {
-    v1: {
-        '3': 252,
-        '5': 253,
-        '7': 17,
-        '8': 161,
-        '10': 160,
-        '11': 164,
-        '12': 184,
-        '13': 166,
-        '15': 167,
-        '16': 162,
-        '18': 163,
-        '19': 257,
-        '21': 256,
-        '22': 171,
-        '23': 254,
-        '24': 255,
-
-        // Model A+ and Model B+ pins
-        '26': 251,
-        '29': 165,
-        '31': 168,
-        '32': 239,
-        '33': 238,
-        '35': 185,
-        '36': 223,
-        '37': 224,
-        '38': 187,
-        '40': 188
-    }
+    '3': 252,
+    '5': 253,
+    '7': 17,
+    '8': 161,
+    '10': 160,
+    '11': 164,
+    '12': 184,
+    '13': 166,
+    '15': 167,
+    '16': 162,
+    '18': 163,
+    '19': 257,
+    '21': 256,
+    '22': 171,
+    '23': 254,
+    '24': 255,
+    '26': 251,
+    '29': 165,
+    '31': 168,
+    '32': 239,
+    '33': 238,
+    '35': 185,
+    '36': 223,
+    '37': 224,
+    '38': 187,
+    '40': 188
 };
 
 var RETRY_OPTS = {
@@ -315,53 +311,30 @@ function Gpio() {
         }
 
         return new Promise(function(resolve, reject) {
-            fs.readFile('/proc/cpuinfo', 'utf8', function(err, data) {
-                if (err) {
-                    return reject(err);
+            // Create a list of valid BCM pins for this Tinkerboard version.
+            // This will be used to validate channel numbers in getPinBcm
+            currentValidBcmPins = []
+            Object.keys(PINS).forEach(
+                function(pin) {
+                // Lookup the BCM pin for the RPI pin and add it to the list
+                currentValidBcmPins.push(PINS[pin]);
                 }
+            );
 
-                // Match the last 4 digits of the number following 'Revision:'
-                var match = data.match(/Revision\s*:\s*[0-9a-f]*([0-9a-f]{4})/);
+            currentPins = PINS;
 
-                if (!match) {
-                    var errorMessage = 'Unable to match Revision in /proc/cpuinfo: ' + data;
-                    return reject(new Error(errorMessage));
-                }
-
-                var revisionNumber = parseInt(match[1], 16);
-                var pinVersion = (revisionNumber < 4) ? 'v1' : 'v2';
-
-                debug(
-                    'seen hardware revision %d; using pin mode %s',
-                    revisionNumber,
-                    pinVersion
-                );
-
-                // Create a list of valid BCM pins for this Raspberry Pi version.
-                // This will be used to validate channel numbers in getPinBcm
-                currentValidBcmPins = []
-                Object.keys(PINS[pinVersion]).forEach(
-                  function(pin) {
-                    // Lookup the BCM pin for the RPI pin and add it to the list
-                    currentValidBcmPins.push(PINS[pinVersion][pin]);
-                  }
-                );
-
-                currentPins = PINS[pinVersion];
-
-                return resolve();
-            });
+            return resolve();
         });
-    };
+    }
 
     function getPinTinkerBoard(channel) {
         return currentPins[channel] + '';
-    };
+    }
 
     function getPinBcm(channel) {
         channel = parseInt(channel, 10);
         return currentValidBcmPins.indexOf(channel) !== -1 ? (channel + '') : null;
-    };
+    }
 
     /**
      * Listen for interrupts on a channel
